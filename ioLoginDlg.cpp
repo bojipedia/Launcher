@@ -172,7 +172,6 @@ std::string GetRealIP() {
 }
 
 void ioLoginDlg::SendLoginData(const char* szID, const char* szPassword) {
-	//modified from https://forum.ragezone.com/threads/lost-saga-launcher.1210111/
 
 	CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->GetMainWnd();
 	if (!pMainFrame)
@@ -238,7 +237,7 @@ void ioLoginDlg::SendLoginData(const char* szID, const char* szPassword) {
 		string encipfix = encip;
 		string gameserverid = serverID->valuestring;
 
-		string keylogs = "LostSaga.exe EDEW3940FVDP4950,10,20,30,1,autoupgrade_info.ini,1000,0,1,0,?" + encodefix + encidfix + "?0?" + encodeipfix + encip + "?" + gameserverid + "?2010,7,15,1?10201?";
+		string keylogs = "autoupgrade.exe EDEW3940FVDP4950,10,20,30,1,autoupgrade_info.ini,1000,0,1,0,?" + encodefix + encidfix + "?0?" + encodeipfix + encip + "?" + gameserverid + "?2010,7,15,1?10201?";
 
 		ExcuteProcess2(keylogs.c_str());
 		DestroyWindow();
@@ -287,7 +286,7 @@ void ioLoginDlg::OnBnClickedLogin()
 
 	CString sPW;
 	m_PWEdit.GetWindowText(sPW);
-	if (strcmp(sPW.GetString(), "PW") == 0)
+	if (strcmp(sPW.GetString(), "Password") == 0)
 	{
 		pMainFrame->ShowErrorDlg("Password is required!", 108);
 		return;
@@ -390,71 +389,44 @@ BOOL ioLoginDlg::OnInitDialog()
 	EnableEasyMove();                    // enable moving of the dialog by clicking anywhere in the dialog
 
 #ifdef SRC_KOR
-	SetBitmap( IDB_BACK_UI_01 );         // set background bitmap
+
+	SetBitmap(IDB_LOGIN_BACK);         // set background bitmap
 	SetStyle(LO_RESIZE);                 // resize dialog to the size of the bitmap
 
-	m_XBtn.LoadBitmap(IDB_XBTN, FALSE );
-	m_XBtn.MoveWindow(311, 5, 24, 26);
+	m_XBtn.LoadBitmap(IDB_LOGIN_CANCELBTN, FALSE);
+	m_XBtn.MoveWindow(311, 5, 25, 26);
 
-	m_LoginBtn.LoadBitmap(IDB_ENTER_UI);
-	m_LoginBtn.MoveWindow(226, 261, 102, 91);
+	m_LoginBtn.LoadBitmap(IDB_LOGIN_ENTERBTN);
+	m_LoginBtn.MoveWindow(224, 263, 102, 60);
 
-	m_EntryBtn.LoadBitmap(IDB_FIND_IDPW);
-	m_EntryBtn.MoveWindow(14, 377, 314, 32);
+	m_EntryBtn.LoadBitmap(IDB_LOGIN_ENTRYBTN);
+	m_EntryBtn.MoveWindow(15, 378, 311, 29);
+
+	m_FindIDBtn.LoadBitmap(IDB_LOGIN_FINDBTN);
+	m_FindIDBtn.MoveWindow(15, 351, 154, 24);
+
+	m_FindPWBtn.LoadBitmap(IDB_LOGIN_FINDPW_BTN);
+	m_FindPWBtn.MoveWindow(171, 351, 155, 24);
+
+	m_IDSaveBtn.LoadBitmap(IDB_LOGIN_IDSAVEBTN);
+	m_IDSaveBtn.MoveWindow(192, 263, 29, 29);
+	m_IDSaveBtn.SetCheckBtn(TRUE);
+
+	m_IDEdit.MoveWindow(20, 265, 165, 25);
+	m_PWEdit.MoveWindow(20, 296, 196, 25);
 
 	//--------------------------------------------------
 
-	m_ChannelBtn.LoadBitmap(IDB_LOGIN_CHANNEL);
-	m_ChannelBtn.MoveWindow(14, 261, 209, 29);
-	m_ChannelBtn.ShowWindow(SW_HIDE);
-
-
-	m_NaverButton.LoadBitmap(IDB_CHANNEL_NAVER);
-	m_NaverButton.MoveWindow(14, 261, 209, 29);
 	m_NaverButton.ShowWindow(SW_HIDE);
-
-	m_MgameButton.LoadBitmap(IDB_CHANNEL_MGAME);
-	m_MgameButton.MoveWindow(14, 261, 209, 29);
 	m_MgameButton.ShowWindow(SW_HIDE);
-
-	m_LostSagaButton.LoadBitmap(IDB_CHANNEL_MAIN);
-	m_LostSagaButton.MoveWindow(14, 261, 209, 29);
-	m_LostSagaButton.ShowWindow(SW_SHOW);
-
-	m_NexonButton.LoadBitmap(IDB_CHANNEL_NEXON);
-	m_NexonButton.MoveWindow(14, 261, 209, 29);
+	m_LostSagaButton.ShowWindow(SW_HIDE);
 	m_NexonButton.ShowWindow(SW_HIDE);
-
-	m_TooniButton.LoadBitmap(IDB_CHANNEL_TOONI);
-	m_TooniButton.MoveWindow(14, 261, 209, 29);
 	m_TooniButton.ShowWindow(SW_HIDE);
-
-	m_DaumButton.LoadBitmap(IDB_CHANNEL_DAUM);
-	m_DaumButton.MoveWindow(14, 261, 209, 29);
 	m_DaumButton.ShowWindow(SW_HIDE);
-
-	m_ChannelListBox.AddString("로스트 사가(공식)");
-	m_ChannelListBox.AddString("넥슨 로스트 사가");
-	m_ChannelListBox.AddString("네이버 게임 로스트 사가");
-	m_ChannelListBox.AddString("투니랜드 로스트 사가");
-	m_ChannelListBox.AddString("엠게임로스트 사가");
-	m_ChannelListBox.AddString("다음 로스트 사가");
-
-	m_ChannelListBox.MoveWindow(14, 290, 209, 90);
+	m_ChannelBtn.ShowWindow(SW_HIDE);
 	m_ChannelListBox.ShowWindow(SW_HIDE);
 
 	//--------------------------------------------------
-
-
-	m_IDSaveBtn.LoadBitmap(IDB_LOGIN_IDSAVEBTN);
-	m_IDSaveBtn.MoveWindow(193, 292, 29, 29);
-	m_IDSaveBtn.SetCheckBtn( TRUE );
-
-	m_FindIDBtn.ShowWindow(SW_HIDE);
-	m_FindPWBtn.ShowWindow(SW_HIDE);
-
-	m_IDEdit.MoveWindow(20, 294, 165, 25);
-	m_PWEdit.MoveWindow(20, 325, 196, 25);
 
 	// edit back img
 	m_IDEditNormalBitmap.DeleteObject();
@@ -668,17 +640,14 @@ void ioLoginDlg::LoadINI()
 	ioINILoaderAU kLoader( "info\\start.ini" );
 	kLoader.SetTitle( "Info" );
 	kLoader.LoadString( "LoginURL", "", szBuf, sizeof( szBuf ) );
-//	m_sLoginURL = szBuf;
-//	m_sLoginURL = "http://172.20.20.75/playExecLGU.asp"; 개발존
-//	m_sLoginURL = "http://www.lostsaga.com/play/playExecLGU.asp";  //
 	m_sLoginURL = szBuf;
 	ZeroMemory(szBuf, sizeof(szBuf));
 
 	kLoader.LoadString( "EntryURL", "", szBuf, sizeof( szBuf ) );
 	m_sEntryURL = szBuf;
 #ifdef SRC_KOR
-	m_sEntryURL = "https://www.lostsaga.com/sendmail/idpwd/searchID.asp";
-	m_sOfficialURL = "http://www.lostsaga.com/main/index.asp";
+	m_sEntryURL = "";
+	m_sOfficialURL = "";
 #endif
 	ZeroMemory( szBuf, sizeof( szBuf ) );
 
@@ -703,7 +672,7 @@ void ioLoginDlg::LoadINI()
 	{
 		m_IDEdit.SetWindowText( szBuf );
 		m_PWEdit.SetPasswordChar(0);
-		m_PWEdit.SetWindowText( "PW" );
+		m_PWEdit.SetWindowText( "Password" );
 		m_bIDEditBlank = false;
 		m_bPWEditBlank = true;
 		m_IDSaveBtn.SetChecked( TRUE );
@@ -722,7 +691,7 @@ void ioLoginDlg::LoadINI()
 	{
 		m_IDEdit.SetWindowText( "ID" );
 		m_PWEdit.SetPasswordChar(0); // 글자표시
-		m_PWEdit.SetWindowText( "PW" );
+		m_PWEdit.SetWindowText( "Password" );
 		m_ChannelListBox.SetCurSel(0);
 		m_bIDEditBlank = true;
 		m_bPWEditBlank = true;
@@ -800,7 +769,7 @@ BOOL ioLoginDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 				if( m_bPWEditBlank )
 				{
 					m_PWEdit.SetPasswordChar(0); // 글자표시
-					pEdit->SetWindowText( "PW" );
+					pEdit->SetWindowText( "Password" );
 				}
 
 				Invalidate(FALSE);
@@ -836,7 +805,7 @@ void ioLoginDlg::OnPaint()
 	enum 
 	{
 #ifdef SRC_KOR
-		X = 14,
+		/*X = 14,
 		Y = 292,
 		WIDTH  = 177,
 		HEIGHT = 29,
@@ -844,7 +813,19 @@ void ioLoginDlg::OnPaint()
 		X_PW      = 14,
 		Y_PW      = 323,
 		WIDTH_PW  = 209,
+		HEIGHT_PW = 29,*/
+
+
+		X = 15,
+		Y = 263,
+		WIDTH = 175,
+		HEIGHT = 29,
+
+		X_PW = 15,
+		Y_PW = 294,
+		WIDTH_PW = 206,
 		HEIGHT_PW = 29,
+
 #else
 		X = 15,
 		Y = 263,
@@ -993,7 +974,7 @@ void ioLoginDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND ));
 		m_ToolTipCtrl.SetDelayTime(500);
-		m_ToolTipCtrl.AddTool(this,"홈페이지 바로가기",  NULL,0);
+		m_ToolTipCtrl.AddTool(this,"",  NULL,0);
 	}
 	else
 		::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW ));
